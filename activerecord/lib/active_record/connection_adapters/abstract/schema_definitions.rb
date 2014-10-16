@@ -255,8 +255,9 @@ module ActiveRecord
         options = args.extract_options!
         polymorphic = options.delete(:polymorphic)
         index_options = options.delete(:index)
+        type = options.delete(:type) || :integer
         args.each do |col|
-          column("#{col}_id", :integer, options)
+          column("#{col}_id", type, options)
           column("#{col}_type", :string, polymorphic.is_a?(Hash) ? polymorphic : options) if polymorphic
           index(polymorphic ? %w(id type).map { |t| "#{col}_#{t}" } : "#{col}_id", index_options.is_a?(Hash) ? index_options : {}) if index_options
         end
